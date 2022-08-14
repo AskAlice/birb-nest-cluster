@@ -2,7 +2,7 @@
 
 set -o nounset
 set -o errexit
-
+set -x
 current_ipv4="$(curl -s https://ipv4.icanhazip.com/)"
 zone_id=$(curl -s -X GET \
     "https://api.cloudflare.com/client/v4/zones?name=${CLOUDFLARE_RECORD_NAME#*.}&status=active" \
@@ -30,10 +30,12 @@ update_ipv4=$(curl -s -X PUT \
     -H "Content-Type: application/json" \
     --data "{\"id\":\"${zone_id}\",\"type\":\"A\",\"proxied\":true,\"name\":\"${CLOUDFLARE_RECORD_NAME}\",\"content\":\"${current_ipv4}\"}" \
 )
+set +x
 if [[ "$(echo "$update_ipv4" | jq --raw-output '.success')" == "true" ]]; then
     printf "%s - Success - IP Address '%s' has been updated" "$(date -u)" "${current_ipv4}"
     exit 0
 else
     printf "%s - Yikes - Updating IP Address '%s' has failed" "$(date -u)" "${current_ipv4}"
+    printf "\n$(echo "$update_ipv4" | jq --raw-output '.success')"
     exit 1
 fi
