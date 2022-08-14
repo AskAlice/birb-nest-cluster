@@ -37,12 +37,12 @@ resource "cloudflare_zone_settings_override" "cloudflare_settings" {
     # /ssl-tls
     ssl = "strict"
     # /ssl-tls/edge-certificates
-    always_use_https         = "on"
+    always_use_https         = "off"
     min_tls_version          = "1.2"
     opportunistic_encryption = "on"
     tls_1_3                  = "zrt"
     automatic_https_rewrites = "on"
-    universal_ssl            = "on"
+    # universal_ssl            = "on"
     # /firewall/settings
     browser_check  = "on"
     challenge_ttl  = 1800
@@ -83,7 +83,7 @@ data "http" "ipv4" {
 }
 
 resource "cloudflare_record" "ipv4" {
-  name    = "ipv4"
+  name    = "k8s"
   zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
   value   = chomp(data.http.ipv4.response_body)
   proxied = true
@@ -91,11 +91,11 @@ resource "cloudflare_record" "ipv4" {
   ttl     = 1
 }
 
-resource "cloudflare_record" "root" {
-  name    = data.sops_file.cloudflare_secrets.data["cloudflare_domain"]
-  zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
-  value   = "ipv4.${data.sops_file.cloudflare_secrets.data["cloudflare_domain"]}"
-  proxied = true
-  type    = "CNAME"
-  ttl     = 1
-}
+# resource "cloudflare_record" "root" {
+#   name    = nonsensitive(data.sops_file.cloudflare_secrets.data["cloudflare_domain"])
+#   zone_id = lookup(data.cloudflare_zones.domain.zones[0], "id")
+#   value   = nonsensitive("k8s.${data.sops_file.cloudflare_secrets.data["cloudflare_domain"]}")
+#   proxied = true
+#   type    = "CNAME"
+#   ttl     = 1
+# }
