@@ -1,0 +1,78 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: esphome
+  namespace: home-automation
+spec:
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: esphome
+      version: 8.4.2
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home
+        namespace: flux-system
+  install:
+    timeout: 10m
+  interval: 10m0s
+  values:
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    image:
+      repository: esphome/esphome
+      tag: 2022.6.3
+    env:
+      TZ: Australia/Sydney
+      ESPHOME_DASHBOARD_USE_PING: "true"
+    persistence:
+      config:
+        enabled: true
+        size: 2Gi
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: ca-issuer
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "home-automation"
+          hajimari.io/appName: "EspHome"
+          # hajimari.io/url
+        tls:
+          - hosts:
+              - esphome.${BASE_DOMAIN}
+            secretName: esphome-tls
+        hosts:
+          - host: esphome.${BASE_DOMAIN}
+            paths:
+              - path: /
+    addons:
+      codeserver:
+        enabled: true
+        image:
+          repository: codercom/code-server
+          tag: 4.5.1
+        workingDir: "/config"
+        args:
+          - --auth
+          - "none"
+          - --user-data-dir
+          - "/config/.vscode"
+          - --extensions-dir
+          - "/config/.vscode"
+        ingress:
+          enabled: true
+          annotations:
+            cert-manager.io/cluster-issuer: ca-issuer
+          tls:
+            - hosts:
+                - config.esphome.${BASE_DOMAIN}
+              secretName: esphome-code-server-tls
+          hosts:
+            - host: config.esphome.${BASE_DOMAIN}
+              paths:
+                - path: /
+        volumeMounts:
+          - name: config
+            mountPath: /config

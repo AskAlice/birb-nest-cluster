@@ -9,7 +9,6 @@ vars:
   ANSIBLE_INVENTORY_DIR: "{{.ANSIBLE_DIR}}/inventory"
 
 tasks:
-
   init:
     desc: Install / Upgrade Ansible galaxy deps
     dir: provision/ansible
@@ -27,20 +26,20 @@ tasks:
     desc: Prepare all the k8s nodes for running k3s
     dir: provision/ansible
     cmds:
-      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/cluster-prepare.yml
+      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/cluster-prepare.yml --ask-become-pass
 
   install:
     desc: Install Kubernetes on the nodes
     dir: provision/ansible
     cmds:
-      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/cluster-installation.yml
+      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/cluster-installation.yml --ask-become-pass
 
   nuke:
     desc: Uninstall Kubernetes on the nodes
     dir: provision/ansible
     interactive: true
     cmds:
-      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/cluster-nuke.yml
+      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/cluster-nuke.yml --ask-become-pass
       - task: reboot
 
   ping:
@@ -59,7 +58,7 @@ tasks:
     desc: Reboot all the k8s nodes
     dir: provision/ansible
     cmds:
-      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/cluster-reboot.yml
+      - ansible-playbook -i {{.ANSIBLE_INVENTORY_DIR}}/hosts.yml {{.ANSIBLE_PLAYBOOK_DIR}}/cluster-reboot.yml --ask-become-pass
 
   poweroff:
     desc: Shutdown all the k8s nodes
