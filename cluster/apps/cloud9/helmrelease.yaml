@@ -19,7 +19,7 @@ spec:
   values:
     secret: {}
     env:
-      TZ: Australia/Sydney
+      TZ: America/Denver
       USER: jeffrey
     ingress:
       annotations:

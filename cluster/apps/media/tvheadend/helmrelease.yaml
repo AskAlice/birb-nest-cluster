@@ -61,7 +61,7 @@ spec:
             paths:
               - path: /
     env:
-      TZ: Australia/Sydney
+      TZ: America/Denver
     image:
       repository: ghcr.io/linuxserver/tvheadend
       tag: version-23754f9a

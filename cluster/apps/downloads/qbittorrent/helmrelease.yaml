@@ -36,11 +36,11 @@ spec:
     settings:
       automaticPortSetup: false
     env:
-      TZ: "Australia/Sydney"
+      TZ: "America/Denver"
       QBT_Preferences__WebUI__AuthSubnetWhitelist: 10.42.0.0/16
       QBT_Preferences__Downloads__SavePath: /data/nas-downloads/
       QBT_Preferences__Downloads__TempPath: /data/nas-downloads/temp/
-      QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: 'true'
+      QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: "true"
     #   UMASK: "022"
     persistence:
       config:
@@ -60,9 +60,9 @@ spec:
         # ingressClassName: "traefik"
         annotations:
           cert-manager.io/cluster-issuer: ca-issuer
-          hajimari.io/enable: 'true'
-          hajimari.io/icon: 'download'
-          hajimari.io/appName: 'QBittorrent'
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "download"
+          hajimari.io/appName: "QBittorrent"
         #   external-dns.alpha.kubernetes.io/target: ingress.${DOMAIN_1}
         #   traefik.ingress.kubernetes.io/router.entrypoints: websecure
         #   traefik.ingress.kubernetes.io/router.middlewares: system-ingress-rfc1918-ips@kubernetescrd

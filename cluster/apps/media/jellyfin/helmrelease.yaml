@@ -25,9 +25,9 @@ spec:
       pullPolicy: IfNotPresent
 
     env:
-      TZ: "Australia/Sydney"
+      TZ: "America/Denver"
     nodeSelector:
-      feature.node.kubernetes.io/custom-intel-gpu: 'true'
+      feature.node.kubernetes.io/custom-intel-gpu: "true"
 
     persistence:
       config:

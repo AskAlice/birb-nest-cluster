@@ -24,7 +24,7 @@ spec:
       repository: esphome/esphome
       tag: 2022.6.3
     env:
-      TZ: Australia/Sydney
+      TZ: America/Denver
       ESPHOME_DASHBOARD_USE_PING: "true"
     persistence:
       config:

@@ -22,9 +22,7 @@ spec:
       repository: ghcr.io/home-assistant/home-assistant
       tag: 2022.8.4
     env:
-      TZ: Australia/Sydney
-    nodeSelector:
-      storage: longhorn
+      TZ: America/Denver
     probes:
       startup:
         # custom: true
