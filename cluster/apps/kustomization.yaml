@@ -7,4 +7,9 @@ resources:
   - kube-system
   - networking
   - monitoring
+  - media
+  - home-automation
+  - downloads
+  - code-server
+  - cloud9
   # - system-upgrade
