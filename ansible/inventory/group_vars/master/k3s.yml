@@ -9,7 +9,7 @@ k3s_control_node: true
 k3s_server:
   node-ip: "{{ ansible_host }}"
   tls-san:
-    - "172.16.7.1"
+    - "k3s.emu.sh"
   # Disable Docker - this will use the default containerd CRI
   docker: false
   flannel-backend: "none" # This needs to be in quotes
