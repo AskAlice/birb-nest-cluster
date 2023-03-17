@@ -17,4 +17,6 @@
     "editor.guides.highlightActiveBracketPair": true,
     "editor.hover.delay": 1500,
     "files.trimTrailingWhitespace": true,
+  "vs-kubernetes.kubeconfig": "c:\\Users\\alice\\.kube\\config"
+  "terminal.integrated.defaultProfile.windows": "Ubuntu-22.04 (WSL)",
 }

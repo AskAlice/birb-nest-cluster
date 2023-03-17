@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: filebeat-config
+  namespace: monitoring
+  annotations:
+    nfs.io/storage-path: "filebeat"
+
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: "nfs-client"

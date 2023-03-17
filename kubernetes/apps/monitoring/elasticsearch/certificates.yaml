@@ -1,0 +1,22 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: elastic-certificates
+  namespace: monitoring
+spec:
+  secretName: elastic-certificates
+  isCA: false
+  dnsNames:
+    - "elasticsearch-master"
+  issuerRef:
+    name: laz-ca-issuer
+    kind: ClusterIssuer
+  duration: 87600h # 10y
+  renewBefore: 360h # 15d
+  keystores:
+    pkcs12:
+      create: true
+      passwordSecretRef:
+        key: password
+        name: pkcs12-password-secret

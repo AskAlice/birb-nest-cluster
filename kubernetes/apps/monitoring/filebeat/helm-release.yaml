@@ -1,0 +1,98 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: filebeat
+  namespace: monitoring
+  labels:
+    component.kutara.io/part-of: standard-helm-release
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: filebeat
+      version: 7.16.1
+      sourceRef:
+        kind: HelmRepository
+        name: elastic
+        namespace: flux-system
+      interval: 5m
+  values:
+    auth:
+      enabled: true
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          hajimari.io/icon: video-input-antenna
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: filebeat-config
+    volumeClaimTemplates:
+      - metadata:
+          name: filebeat-config
+        spec:
+          accessModes:
+            - ReadWriteMany
+          storageClassName: "nfs-client"
+          resources:
+            requests:
+              storage: 200G
+    extraVolumes:
+      - name: filebeat-config
+        persistentVolumeClaim:
+          claimName: filebeat-config
+      - name: filebeat-certs
+        persistentVolumeClaim:
+          claimName: elasticsearch-certs
+    extraVolumeMounts:
+      - name: filebeat-certs
+        mountPath: /usr/share/filebeat/config/certs
+        readOnly: true
+      - name: filebeat-config
+        mountPath: /usr/share/filebeat/config
+
+    resources:
+      requests:
+        memory: 1024Mi
+        cpu: 500m
+      limits:
+        memory: 8192Mi
+    service:
+      type: ClusterIP
+      ports:
+        - name: beats
+          port: 5044
+          protocol: TCP
+          targetPort: 5044
+        - name: http
+          port: 8080
+          protocol: TCP
+          targetPort: 8080
+    daemonset:
+      filebeatConfig:
+        filebeat.yml: |
+          filebeat.inputs:
+          - type: container
+            paths:
+              - /var/log/containers/*.log
+            processors:
+            - add_kubernetes_metadata:
+                host: ${NODE_NAME}
+                matchers:
+                - logs_path:
+                    logs_path: "/var/log/containers/"
+          output.logstash:
+            hosts: ["logstash-logstash:5044"]

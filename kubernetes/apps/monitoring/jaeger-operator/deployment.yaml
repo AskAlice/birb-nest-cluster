@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger-operator
+  namespace: observability
+spec:
+  template:
+    spec:
+      containers:
+        - name: jaeger-operator
+          image: jaegertracing/jaeger-operator:master
+          args: ["start", "--log-level=debug"]
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: jaeger
+  namespace: monitoring
+  spec:
+  strategy: production
+  storage:
+    type: elasticsearch
+    options:
+      memory:
+        max-traces: 100000
+      es:
+        server-urls: http://elasticsearch:9200
+        username: ${ELASTIC_USERNAME}
+        password: ${ELASTIC_PASSWORD}
+  allInOne:
+    image: jaegertracing/all-in-one:latest
+    options:
+      log-level: debug
+      query:
+        # base-path: /jaeger
+        base-path: /
+      prometheus: # <1>
+        server-url: "http://prometheus:9090" # <2>
+  ui:
+    options:
+      dependencies:
+        menuEnabled: false
+      tracking:
+        gaID: UA-000000-2
+      menu:
+        - label: "About Jaeger"
+          items:
+            - label: "Documentation"
+              url: "https://www.jaegertracing.io/docs/latest"
+    metricsStorage: # <3>
+      type: prometheus # <4>

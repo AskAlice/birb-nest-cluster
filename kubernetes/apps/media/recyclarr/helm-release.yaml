@@ -1,0 +1,45 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: recyclarr
+  namespace: media
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: recyclarr
+      version: 0.0.20
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 5m
+  values:
+    env:
+      TZ: "${TIMEZONE}"
+      CRON_SCHEDULE: "@daily"
+    image:
+      pullPolicy: IfNotPresent
+      repository: tccr.io/truecharts/recyclarr
+      tag: latest@sha256:89f4cd18f4920122eb7ca3b3d68169d6d2066a97c784f3ddb16ca6729e382d1c
+    persistence:
+      config:
+        enabled: true
+        mountPath: /gordo/k8s/media-config
+        storageClass: "nfs-client"
+    podSecurityContext:
+      runAsGroup: 0
+      runAsUser: 0
+    probes:
+      liveness:
+        enabled: true
+      readiness:
+        enabled: true
+      startup:
+        enabled: true
+    securityContext:
+      readOnlyRootFilesystem: false
+      runAsNonRoot: false
+    portal:
+      enabled: false

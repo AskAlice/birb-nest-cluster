@@ -1,0 +1,155 @@
+# ---
+# apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# kind: HelmRelease
+# metadata:
+#   name: agent-dvr
+#   namespace: home-automation
+#   labels:
+#     component.kutara.io/part-of: standard-helm-release
+# spec:
+#   chart:
+#     spec:
+#       chart: ispy-agent-dvr
+#       version: 1.0.17
+#       sourceRef:
+#         kind: HelmRepository
+#         name: truecharts
+#         namespace: flux-system
+#       interval: 15m
+#   values:
+#     hostNetwork: true
+#     hostname: agent-k8s
+#     image:
+#       repository: tccr.io/truecharts/ispy-agent-dvr
+#       tag: 4.1.3.0@sha256:934a2280c99c5b061d24883975618024638be148289c45c4f251ce05ac01b277
+#       pullPolicy: IfNotPresent
+#     resources:
+#       requests:
+#         cpu: 4.0
+#         memory: 48000Mi
+#       limits:
+#         cpu: 10.0
+#         memory: 62000Mi
+#     affinity:
+#       nodeAffinity:
+#         requiredDuringSchedulingIgnoredDuringExecution:
+#           nodeSelectorTerms:
+#             - matchExpressions:
+#                 - key: k8s-node
+#                   operator: In
+#                   values:
+#                     - gpunode
+#     persistence:
+#       commandspath:
+#         enabled: true
+#         mountPath: /gordo/k8s/agent/Commands
+#         storageClass: "nfs-client"
+#         size: 100Gi
+#       configpath:
+#         enabled: true
+#         mountPath: /gordo/k8s/agent/Media/XML/
+#         storageClass: "nfs-client"
+#         size: 100Gi
+#       mediapath:
+#         enabled: true
+#         mountPath: /gordo/k8s/agent/Media/WebServerRoot/Media/
+#         storageClass: "nfs-client"
+#         size: 2048Gi
+#     securityContext:
+#       privileged: true
+#       allowPrivilegeEscalation: true
+#       readOnlyRootFilesystem: false
+#       runAsNonRoot: false
+#     ports:
+#       main:
+#         expose: true
+#       turn:
+#         expose: true
+#       webrtc0:
+#         expose: true
+#       webrtc1:
+#         expose: true
+#       webrtc2:
+#         expose: true
+#       webrtc3:
+#         expose: true
+#       webrtc4:
+#         expose: true
+#       webrtc5:
+#         expose: true
+#       webrtc6:
+#         expose: true
+#       webrtc7:
+#         expose: true
+#       webrtc8:
+#         expose: true
+#       webrtc9:
+#         expose: true
+#       webrtc10:
+#         expose: true
+#     # service:
+#     #   main:
+#     #     enabled: true
+#     #     type: LoadBalancer
+#     #     annotations:
+#     #       metallb.universe.tf/loadBalancerIPs: "172.16.7.211"
+#     #     spec:
+#     #       externalTrafficPolicy: Public
+#     #     ports:
+#     #       main:
+#     #         protocol: TCP
+#     #         port: 38090
+#     #       turn:
+#     #         protocol: UDP
+#     #         port: 3478
+#     #       webrtc0:
+#     #         protocol: TCP
+#     #         port: 50000
+#     #       webrtc1:
+#     #         protocol: UDP
+#     #         port: 50001
+#     #       webrtc2:
+#     #         protocol: UDP
+#     #         port: 50002
+#     #       webrtc3:
+#     #         protocol: UDP
+#     #         port: 50003
+#     #       webrtc4:
+#     #         protocol: UDP
+#     #         port: 50004
+#     #       webrtc5:
+#     #         protocol: UDP
+#     #         port: 50005
+#     #       webrtc6:
+#     #         protocol: UDP
+#     #         port: 50006
+#     #       webrtc7:
+#     #         protocol: UDP
+#     #         port: 50007
+#     #       webrtc8:
+#     #         protocol: UDP
+#     #         port: 50008
+#     #       webrtc9:
+#     #         protocol: UDP
+#     #         port: 50009
+#     #       webrtc-10:
+#     #         protocol: UDP
+#     #         port: 50010
+#     #         targetPort: 50010
+#     # ingress:
+#     #   main:
+#     #     enabled: true
+#     #     ingressClassName: traefik
+#     #     annotations:
+#     #       cert-manager.io/cluster-issuer: letsencrypt-production
+#     #       external-dns.alpha.kubernetes.io/target: "k8s.${SECRET_DOMAIN}"
+#     #       external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+#     #       external-dns/is-public: "true"
+#     #       traefik.ingress.kubernetes.io/router.entrypoints: "web"
+#     #       traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-only@kubernetescrd"
+#     #     hosts:
+#     #       - host: "agent.k8s.emu.sh"
+#     #         paths:
+#     #           - path: /
+#     #             pathType: Prefix
+#   interval: 10m0s

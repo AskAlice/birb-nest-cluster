@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: esphome-config-v1
+  namespace: home-automation
+  annotations:
+    nfs.io/storage-path: "esphome" # not required, depending on whether this annotation was shown in the storage class description
+
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: "nfs-client"

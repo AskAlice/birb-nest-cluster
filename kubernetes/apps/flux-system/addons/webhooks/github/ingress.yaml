@@ -20,6 +20,16 @@ spec:
                 name: webhook-receiver
                 port:
                   number: 80
+    - host: "flux-receiver.k8s.${SECRET_DOMAIN}"
+      http:
+        paths:
+          - path: /hook/
+            pathType: Prefix
+            backend:
+              service:
+                name: webhook-receiver
+                port:
+                  number: 80
   tls:
     - hosts:
         - *host

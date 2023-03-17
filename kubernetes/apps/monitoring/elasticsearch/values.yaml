@@ -1,0 +1,128 @@
+---
+replicas: 2
+hostNetwork: true
+protocol: https
+esConfig:
+  elasticsearch.yml: |
+    xpack.security.enabled: "true"
+    xpack.security.transport.ssl.enabled: "true"
+    xpack.security.transport.ssl.verification_mode: "certificate"
+    xpack.security.http.ssl.client_authentication: "optional"
+    xpack.security.transport.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+    xpack.security.transport.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+    xpack.security.http.ssl.enabled: true
+    xpack.security.http.ssl.truststore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+    xpack.security.http.ssl.keystore.path: /usr/share/elasticsearch/config/certs/elastic-certificates.p12
+    xpack.security.transport.ssl.keystore.password: ''
+    xpack.security.transport.ssl.truststore.password: ''
+    xpack.security.http.ssl.truststore.password: ''
+    xpack.security.http.ssl.keystore.password: ''
+    xpack.security.authc:
+      anonymous:
+        username: anonymous
+        roles: superuser
+        authz_exception: false
+extraEnvs:
+  - name: ELASTIC_USERNAME
+    value: ${ELASTIC_USERNAME}
+  - name: ELASTIC_PASSWORD
+    value: ${ELASTIC_PASSWORD}
+  - name: ELASTIC_KEYSTORE_PASSWORD
+    value: ""
+  - name: POD_IP
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: status.podIP
+  - name: POD_NAME
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.name
+  - name: NODE_NAME
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: spec.nodeName
+  - name: NAMESPACE
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.namespace
+  # - name: PROBE_PASSWORD_PATH
+  #   value: /mnt/elastic-internal/probe-user/elastic-internal-probe
+  # - name: PROBE_USERNAME
+  #   value: elastic-internal-probe
+  - name: READINESS_PROBE_PROTOCOL
+    value: https
+extraContainers:
+  - name: monitoring
+    image: quay.io/prometheuscommunity/elasticsearch-exporter:master
+    ports:
+      - containerPort: 9114
+        name: metrics
+        protocol: TCP
+    env:
+      - name: ELASTIC_USERNAME
+        value: ${ELASTIC_USERNAME}
+      - name: ELASTIC_PASSWORD
+        value: ${ELASTIC_PASSWORD}
+      - name: ES_USERNAME
+        value: ${ELASTIC_USERNAME}
+      - name: ES_PASSWORD
+        value: ${ELASTIC_PASSWORD}
+    args:
+      - "--es.uri=https://${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}@elasticsearch-master.svc.cluster.local:9200"
+      - "--es.ssl-skip-verify"
+      - '--es.ca="elastic-certificates.p12"'
+      - "--es.all"
+      - "--web.listen-address=:9114"
+antiAffinity: soft
+esJavaOpts: -Xmx128m -Xms128m
+resources:
+  limits:
+    cpu: 1000m
+    memory: 10240M
+  requests:
+    cpu: 100m
+    memory: 8192M
+
+volumeClaimTemplates:
+  - metadata:
+      name: elasticsearch-config
+    spec:
+      accessModes:
+        - ReadWriteMany
+      storageClassName: "nfs-client"
+      resources:
+        requests:
+          storage: 200G
+
+persistence:
+  config:
+    enabled: true
+    existingClaim: elasticsearch-config
+# mount elasticsearch-certs existing pvc at /usr/share/elasticsearch/config/certs
+extraVolumeMounts:
+  - name: elasticsearch-config
+    mountPath: /usr/share/elasticsearch/config
+  - name: elasticsearch-certs
+    mountPath: /usr/share/elasticsearch/config/certs
+    readOnly: true
+ingress:
+  main:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+      hajimari.io/icon: video-input-antenna
+    hosts:
+      - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - *host
+enabled: true
+httpPortName: https

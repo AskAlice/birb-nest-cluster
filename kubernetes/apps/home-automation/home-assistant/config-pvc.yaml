@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: home-assistant-config-v1
+  namespace: home-automation
+  annotations:
+    nfs.io/storage-path: "homeassistant" # not required, depending on whether this annotation was shown in the storage class description
+
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: "nfs-client"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: home-assistant-backup-v1
+  namespace: home-automation
+  annotations:
+    nfs.io/storage-path: "homeassistant-backup" # not required, depending on whether this annotation was shown in the storage class description
+
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: "nfs-client"
