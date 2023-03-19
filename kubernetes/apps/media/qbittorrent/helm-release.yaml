@@ -33,8 +33,6 @@ spec:
             port: 8080
       bittorrent:
         enabled: true
-        type: LoadBalancer
-        loadBalancerIP: "172.16.7.216"
         ports:
           bittorrent:
             enabled: true

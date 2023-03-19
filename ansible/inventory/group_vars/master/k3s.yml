@@ -26,11 +26,10 @@ k3s_server:
     - traefik
   disable-network-policy: true
   disable-cloud-controller: true
-  write-kubeconfig-mode: "644"
-  # Network CIDR to use for pod IPs
-  cluster-cidr: "172.17.0.0/16"
-  # Network CIDR to use for service IPs
-  service-cidr: "172.18.0.0/16"
+  cluster-cidr: "10.42.0.0/16"
+  service-cidr: "10.43.0.0/16"
+  write-kubeconfig-mode: "0644"
+  etcd-expose-metrics: true
   kube-controller-manager-arg:
     # Required to monitor kube-controller-manager with kube-prometheus-stack
     - "bind-address=0.0.0.0"
@@ -41,7 +40,6 @@ k3s_server:
     # Required to monitor kube-scheduler with kube-prometheus-stack
     - "bind-address=0.0.0.0"
   # Required to monitor etcd with kube-prometheus-stack
-  etcd-expose-metrics: true
   kube-apiserver-arg:
     # Required for HAProxy health-checks
     - "anonymous-auth=true"
