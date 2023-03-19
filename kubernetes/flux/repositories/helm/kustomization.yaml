@@ -18,7 +18,6 @@ resources:
   - metallb.yaml
   - metrics-server.yaml
   - stakater.yaml
-  - weaveworks-kured.yaml
   - nfs.yaml
   - opensearch.yaml
   - kerberos.yaml
