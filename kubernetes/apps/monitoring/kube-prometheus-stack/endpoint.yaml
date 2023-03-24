@@ -10,3 +10,15 @@ metadata:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
     external-dns.alpha.kubernetes.io/target: "k8s.${SECRET_DOMAIN}"
 spec:
+  ingressClassName: nginx
+  rules:
+    - host: grafana.emu.sh
+      http:
+        paths:
+          - backend:
+              service:
+                name: main-grafana-http
+                port:
+                  number: 5602
+            path: /
+            pathType: Prefix
