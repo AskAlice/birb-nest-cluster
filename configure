@@ -57,7 +57,7 @@ main() {
             > "${PROJECT_DIR}/kubernetes/apps/networking/external-dns/app/secret.sops.yaml"
         sops --encrypt --in-place "${PROJECT_DIR}/kubernetes/apps/networking/external-dns/app/secret.sops.yaml"
         # sops --encrypt --in-place "${PROJECT_DIR}/kubernetes/core/cluster-issuers/secret.sops.yaml"
-        sops --encrypt --in-place "${PROJECT_DIR}/kubernetes/apps/monitoring/elasticsearch/elastic-secret.sops.yaml"
+        # sops --encrypt --in-place "${PROJECT_DIR}/kubernetes/apps/monitoring/elasticsearch/elastic-secret.sops.yaml"
         envsubst < "${PROJECT_DIR}/tmpl/terraform/secret.sops.yaml" \
             > "${PROJECT_DIR}/terraform/cloudflare/secret.sops.yaml"
         sops --encrypt --in-place "${PROJECT_DIR}/terraform/cloudflare/secret.sops.yaml"
