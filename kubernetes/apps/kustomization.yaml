@@ -12,3 +12,10 @@ resources:
   - networking
   - storage
   - system-upgrade
+  - system
+  - security
+  - databases
+  - services
+  - search
+  - tor
+  - vpn
