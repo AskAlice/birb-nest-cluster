@@ -10,10 +10,10 @@ spec:
     spec:
       # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
       chart: kube-prometheus-stack
-      version: 45.7.1
+      version: 45.8.0
       sourceRef:
         kind: HelmRepository
-        name: prometheus-community
+        name: prometheus-community-charts
         namespace: flux-system
       interval: 15m
   install:
@@ -26,7 +26,7 @@ spec:
     remediation:
       retries: 3
   dependsOn:
-    - name: nfs-client
+    - name: csi-driver-nfs
       namespace: storage
   values:
     fullnameOverride: prom
@@ -139,7 +139,7 @@ spec:
           pathType: Prefix
           ingressClassName: "nginx"
           hosts:
-            - &host "alerts.skylab.fi"
+            - &host "alerts.${SECRET_DOMAIN}"
           tls:
             - hosts:
                 - *host
@@ -173,10 +173,10 @@ spec:
         #        annotations:
         #          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
-          - "prom.skylab.fi"
+          - "prom.${SECRET_DOMAIN}"
         tls:
           - hosts:
-              - "prom.skylab.fi"
+              - "prom.${SECRET_DOMAIN}"
       thanosService:
         enabled: false
       prometheusSpec:

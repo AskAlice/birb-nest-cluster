@@ -1,0 +1,132 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: downloads-gateway
+  namespace: vpn
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: pod-gateway
+      version: 9.9.0
+      sourceRef:
+        kind: HelmRepository
+        name: samipsolutions-charts
+        namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    image:
+      repository: registry.samipsolutions.fi/library/pod-gateway
+      pullPolicy: Always
+      tag: latest@sha256:bf143c841a61bc5b34232d6956b0c3f06d4a119e5cb710832016033b5dfe38f7
+
+    addons:
+      netshoot:
+        enabled: true
+      vpn:
+        enabled: true
+        type: gluetun
+        image:
+          repository: docker.io/qmcgaw/gluetun
+          tag: v3.32.0@sha256:70e2b9fe66941d6de31419c3207b525293f2e6a92a3788869bb337a17e0e5ec8
+        env:
+          - name: VPN_TYPE
+            value: wireguard
+          - name: VPN_SERVICE_PROVIDER
+            value: mullvad
+          - name: VPN_INTERFACE
+            value: wg0
+          - name: FIREWALL
+            value: "off"
+          - name: DOT
+            value: "off"
+          - name: FIREWALL_VPN_INPUT_PORTS
+            value: 51820,55633
+          # - name:  WIREGUARD_PRIVATE_KEY
+          #   value: set in secret
+          # - name:  WIREGUARD_ADDRESSES
+          #   value: set in secret
+          # - name:  SERVER_COUNTRIES
+          #   value: set in secret
+
+        envFrom:
+          - secretRef:
+              name: downloads-gateway-vpnconfig
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+
+        networkPolicy:
+          enabled: false
+          egress:
+            - to:
+                - ipBlock:
+                    cidr: 0.0.0.0/0
+                - ipBlock:
+                    cidr: ::/0
+              ports:
+                # VPN traffic
+                - port: 51820
+                  protocol: UDP
+                - port: 55633
+                  protocol: UDP
+                - port: 55633
+                  protocol: TCP
+            - to:
+                - namespaceSelector: {}
+
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: downloads-gateway-pod-gateway
+      secret.reloader.stakater.com/reload: downloads-gateway-vpnconfig
+
+    DNS: 172.16.1.1
+    routed_namespaces:
+      - downloads
+      - media
+
+    settings:
+      VPN_INTERFACE: "wg0"
+      # VXLAN_ID: 42
+      # VXLAN_IP_NETWORK: 172.16.1
+      # VXLAN_IPv6_NETWORK: fd60:ca7f:e5d8:42e8
+      VXLAN_GATEWAY_FIRST_DYNAMIC_IP: 20
+      VPN_BLOCK_OTHER_TRAFFIC: false
+      VPN_TRAFFIC_PORT: "51820"
+      VPN_LOCAL_CIDRS: 10.0.0.0/8 192.168.0.0/16
+      VPN_LOCAL_IPv6_CIDRS: 2001:67c:1104::/48
+      NOT_ROUTED_TO_GATEWAY_CIDRS: 10.0.0.0/8 192.168.0.0/16
+      IPV6_ENABLED: true
+      IPV4_ENABLED: true
+
+    publicPorts:
+      - hostname: qbittorrent
+        IP: 10
+        ports:
+          - type: tcp
+            port: 55633
+
+    publicIPv6Ports:
+      - hostname: qbittorrent
+        IP: 10
+        ports:
+          - type: tcp
+            port: 55633
+
+    webhook:
+      image:
+        repository: ghcr.io/angelnu/gateway-admision-controller
+        tag: v3.9.0@sha256:4e169da5af107a9c6c784d3e03c89da07fad45f18358ab5b7177662df12d955a
+      gatewayDefault: false
+      gatewayLabel: setGateway
+      gatewayAnnotation: setGateway
+      namespaceSelector:
+        label: "vpn-routed-gateway"

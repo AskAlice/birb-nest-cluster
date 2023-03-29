@@ -1,0 +1,119 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app i2p
+  namespace: services
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.3.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: csi-driver-nfs
+      namespace: storage
+  values:
+    hostNetwork: true
+    controller:
+      replicas: 1
+      strategy: RollingUpdate
+    fullNameOverride: *app
+    image:
+      repository: geti2p/i2p
+      tag: latest
+
+    env:
+      JVM_XMX: 512M
+    service:
+      main:
+        enabled: true
+        ports:
+          http:
+            port: 7657
+      other:
+        enabled: true
+        ports:
+          http-proxy:
+            enabled: true
+            port: 4444
+          https-proxy:
+            enabled: true
+            port: 4445
+      i2np:
+        enabled: true
+        type: LoadBalancer
+        externalTrafficPolicy: Local
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: "10.96.69.4"
+        ipFamilies:
+          - IPv4
+        ports:
+          tcp:
+            enabled: true
+            port: 50520
+            protocol: TCP
+            targetPort: 12345
+          udp:
+            enabled: true
+            port: 50520
+            protocol: UDP
+            targetPort: 12345
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+        hosts:
+          - host: &host "i2p.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+    probes:
+      readiness:
+        enabled: false
+      liveness:
+        enabled: false
+      startup:
+        enabled: false
+
+    persistence:
+      config:
+        enabled: true
+        mountPath: /i2p/.i2p
+        existingClaim: i2p-config
+      data:
+        enabled: true
+        mountPath: /i2psnark
+        existingClaim: i2p-data
+
+    resources:
+      requests:
+        memory: 512Mi
+      limits:
+        memory: 1Gi
+
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/arch
+                  operator: In
+                  values:
+                    - "amd64"
