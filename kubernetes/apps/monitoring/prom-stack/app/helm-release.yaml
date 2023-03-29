@@ -26,7 +26,7 @@ spec:
     remediation:
       retries: 3
   dependsOn:
-    - name: csi-driver-nfs
+    - name: nfs-client
       namespace: storage
   values:
     fullnameOverride: prom

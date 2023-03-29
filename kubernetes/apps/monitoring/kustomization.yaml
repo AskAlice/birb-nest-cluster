@@ -5,7 +5,7 @@ resources:
   - namespace.yaml
   - prom-stack
   - grafana
-  - loki
+  - loki/ks.yaml
   - elasticsearch
   # - logstash
   # - filebeat
