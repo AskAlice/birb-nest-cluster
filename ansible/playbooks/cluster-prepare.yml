@@ -53,6 +53,42 @@
           notify: Reboot
           when: "'raspi' in ansible_kernel"
       when: ansible_facts['distribution'] == 'Ubuntu'
+    - name: Install NVIDIA apt repo
+      become: true
+      when:
+        - "'nvidia-container-runtime' not in ansible_pkg_mgr"
+        - "'-tegra' not in ansible_kernel | default('')"
+        - "'nvidia' in lspci.stdout | default('')"
+      shell: |
+        distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+        curl -s -L https://nvidia.github.io/libnvidia-container/gpgkey | sudo apt-key add -
+        curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | sudo tee /etc/apt/sources.list.d/libnvidia-container.list
+        sudo apt-get update
+    - name: install nvidia-container-runtime
+      ansible.builtin.apt:
+        name: ["nvidia-container-runtime"]
+        install_recommends: true
+      when:
+        - "'-tegra' in ansible_kernel | default('')"
+        - "'nvidia' in lspci.stdout | default('')"
+        - ansible_facts['distribution'] == 'Ubuntu'
+      register: lspci
+    - name: install nvidia-headless
+      block:
+        - name: install nvidia-headless
+          ansible.builtin.apt:
+            name: ["nvidia-headless-525-server"]
+            install_recommends: false
+      when:
+        - "'-tegra' not in ansible_kernel | default('')"
+        - "'nvidia' in lspci.stdout | default('')"
+        - ansible_facts['distribution'] == 'Ubuntu'
+    - name: configure k3s to use cuda at /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl
+      command: sudo wget https://k3d.io/v4.4.8/usage/guides/cuda/config.toml.tmpl -O /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl
+      when:
+        - "'-tegra' in ansible_kernel | default('')"
+        - "'nvidia' in lspci.stdout | default('')"
+        - ansible_facts['distribution'] == 'Ubuntu'
     - name: User Configuration
       block:
         - name: User Configuration | Add additional SSH public keys
