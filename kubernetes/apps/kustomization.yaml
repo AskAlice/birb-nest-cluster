@@ -11,7 +11,7 @@ resources:
   - monitoring
   - networking
   - storage
-  - system-upgrade
+  # - system-upgrade
   - system
   - security
   - databases
