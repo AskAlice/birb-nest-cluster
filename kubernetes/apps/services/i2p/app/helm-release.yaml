@@ -56,7 +56,7 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Local
         annotations:
-          metallb.universe.tf/loadBalancerIPs: "10.96.69.4"
+          # metallb.universe.tf/loadBalancerIPs: "10.96.69.4"
         ipFamilies:
           - IPv4
         ports:
