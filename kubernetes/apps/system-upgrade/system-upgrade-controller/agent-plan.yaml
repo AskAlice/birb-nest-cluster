@@ -15,7 +15,7 @@ spec:
     matchExpressions:
       - { key: k3s-upgrade, operator: Exists }
       - { key: k3s-upgrade, operator: NotIn, values: ["disabled", "false"] }
-      - { key: node-role.kubernetes.io/master, operator: NotIn, values: ["true"] }
+      - {key: node-role.kubernetes.io/master, operator: NotIn, values: ["true"] }
   tolerations:
     - { key: cm4, operator: Exists }
   prepare:
