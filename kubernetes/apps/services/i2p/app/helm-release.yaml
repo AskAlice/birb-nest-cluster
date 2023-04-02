@@ -22,7 +22,7 @@ spec:
     remediation:
       retries: 5
   dependsOn:
-    - name: csi-driver-nfs
+    - name: nfs-subdir-external-provisioner
       namespace: storage
   values:
     hostNetwork: true
