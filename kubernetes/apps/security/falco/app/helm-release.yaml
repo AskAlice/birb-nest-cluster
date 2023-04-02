@@ -69,7 +69,7 @@ spec:
             - hosts:
                 - *host
         redis:
-          storageClass: longhorn
+          storageClass: nfs-client
           nodeSelector:
             kubernetes.io/arch: amd64
 

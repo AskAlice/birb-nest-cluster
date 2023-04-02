@@ -137,7 +137,7 @@ spec:
       replicas: 3
       persistence:
         size: 20Gi
-        storageClass: longhorn
+        storageClass: nfs-client
 
     backend:
       replicas: 3
@@ -154,7 +154,7 @@ spec:
           emptyDir: {}
       persistence:
         size: 20Gi
-        storageClass: longhorn
+        storageClass: nfs-client
 
     monitoring:
       serviceMonitor:

@@ -45,7 +45,7 @@ spec:
         mountPath: /data
         accessMode: ReadWriteOnce
         size: 1Gi
-        storageClass: longhorn
+        storageClass: nfs-client
     resources:
       requests:
         cpu: 10m

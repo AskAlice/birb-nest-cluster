@@ -25,7 +25,7 @@ spec:
         any:
           - resources:
               namespaces:
-                - longhorn-system
+                - nfs-client-system
                 - system-upgrade
                 - ci
                 - tekton-pipelines

@@ -37,7 +37,7 @@ resources:
   - kubernetes-sigs-descheduler.yaml
   - kubernetes-sigs-metrics-server.yaml
   - kyverno.yaml
-  - longhorn.yaml
+  - nfs-client.yaml
   - metallb.yaml
   - metrics-server.yaml
   - nfs-subdir-external-provisioner.yaml
