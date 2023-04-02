@@ -5,4 +5,4 @@ resources:
   # - https://github.com/rancher/system-upgrade-controller/releases/latest/download/system-upgrade-controller.yaml
   - namespace.yaml
   # - controller.yaml
-  - system-upgrade-controller
+  - ./system-upgrade-controller/ks.yaml
