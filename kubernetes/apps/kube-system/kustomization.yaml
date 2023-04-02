@@ -12,6 +12,4 @@ resources:
   # - node-feature-discovery
   - reflector
   # - intel-gpu-plugin
-  - kyverno/ks.yaml
-  - kyverno/ks-policies.yaml
   - snapshot-controller/ks.yaml

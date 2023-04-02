@@ -7,3 +7,5 @@ resources:
   - proxitok/ks.yaml
   #  - i2p/ks.yaml
   - piped/ks.yaml
+  - kyverno/ks.yaml
+  - kyverno/ks-policies.yaml
