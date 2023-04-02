@@ -10,7 +10,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-system-kyverno
-  path: ./kubernetes/apps/system/kyverno/policies
+  path: ./kubernetes/apps/kube-system/kyverno/policies
   prune: true
   sourceRef:
     kind: GitRepository
