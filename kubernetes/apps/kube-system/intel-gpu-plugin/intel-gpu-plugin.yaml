@@ -4,7 +4,7 @@ kind: Kustomization
 metadata:
   name: intel-device-plugin-gpu
 spec:
-  path: ./cluster/apps/kube-system/intel-gpu-plugin/plugin
+  path: ./kubernetes/apps/kube-system/intel-gpu-plugin/plugin
   prune: true
   sourceRef:
     kind: GitRepository

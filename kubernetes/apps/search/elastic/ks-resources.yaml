@@ -10,7 +10,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-apps-search-elastic-operator
-  path: ./cluster/apps/search/elastic/resources
+  path: ./kubernetes/apps/search/elastic/resources
   prune: false
   sourceRef:
     kind: GitRepository

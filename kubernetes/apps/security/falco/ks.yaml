@@ -6,7 +6,7 @@ metadata:
   name: cluster-apps-security-falco
   namespace: flux-system
 spec:
-  path: ./cluster/apps/security/falco/app
+  path: ./kubernetes/apps/security/falco/app
   prune: true
   sourceRef:
     kind: GitRepository

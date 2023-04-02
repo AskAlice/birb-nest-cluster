@@ -4,7 +4,7 @@ kind: Kustomization
 metadata:
   name: intel-device-plugin-operator
 spec:
-  path: ./cluster/apps/kube-system/intel-gpu-plugin/operator
+  path: ./kubernetes/apps/kube-system/intel-gpu-plugin/operator
   prune: true
   sourceRef:
     kind: GitRepository
