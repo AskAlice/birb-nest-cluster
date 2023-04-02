@@ -41,7 +41,7 @@ resources:
   - metallb.yaml
   - metrics-server.yaml
   - nfs-subdir-external-provisioner.yaml
-  - nfs.yaml
+  # - nfs.yaml
   - node-feature-discovery.yaml
   - nvidia.yaml
   - opensearch.yaml
