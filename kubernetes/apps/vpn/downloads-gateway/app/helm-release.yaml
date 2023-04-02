@@ -12,7 +12,7 @@ spec:
       version: 9.9.0
       sourceRef:
         kind: HelmRepository
-        name: samipsolutions-charts
+        name: samipsolutions
         namespace: flux-system
       interval: 15m
   install:
