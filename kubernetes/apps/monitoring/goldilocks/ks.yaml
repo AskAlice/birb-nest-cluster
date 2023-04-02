@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-monitoring-goldilocks
   namespace: flux-system
 spec:
-  path: "./cluster/apps/monitoring/goldilocks/app/"
+  path: "./kubernetes/apps/monitoring/goldilocks/app/"
   prune: true
   sourceRef:
     kind: GitRepository

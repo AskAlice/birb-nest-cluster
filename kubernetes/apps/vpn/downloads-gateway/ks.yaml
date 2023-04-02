@@ -5,7 +5,7 @@ metadata:
   name: apps-downloads-gateway
   namespace: flux-system
 spec:
-  path: "./cluster/apps/vpn/downloads-gateway/app/"
+  path: "./kubernetes/apps/vpn/downloads-gateway/app/"
   prune: true
   sourceRef:
     kind: GitRepository

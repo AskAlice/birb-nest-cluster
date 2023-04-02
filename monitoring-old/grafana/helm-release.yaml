@@ -116,13 +116,13 @@ spec:
     dashboards:
       default:
         electricity:
-          url: https://raw.githubusercontent.com/samip5/k8s-cluster/main/cluster/apps/monitoring/grafana/dashboards/electricity_dash.json
+          url: https://raw.githubusercontent.com/samip5/k8s-cluster/main/kubernetes/apps/monitoring/grafana/dashboards/electricity_dash.json
           datasource: InfluxDB
         zigbee:
-          url: https://raw.githubusercontent.com/samip5/k8s-cluster/main/cluster/apps/monitoring/grafana/dashboards/zigbee_dash.json
+          url: https://raw.githubusercontent.com/samip5/k8s-cluster/main/kubernetes/apps/monitoring/grafana/dashboards/zigbee_dash.json
           datasource: InfluxDB
         speedtest:
-          url: https://raw.githubusercontent.com/samip5/k8s-cluster/main/cluster/apps/monitoring/grafana/dashboards/speedtest_exporter.json
+          url: https://raw.githubusercontent.com/samip5/k8s-cluster/main/kubernetes/apps/monitoring/grafana/dashboards/speedtest_exporter.json
           datasource: Prometheus
       k8s:
         # Ref: https://grafana.com/grafana/dashboards/2842

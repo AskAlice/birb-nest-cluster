@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-services-i2p
   namespace: flux-system
 spec:
-  path: "./cluster/apps/services/i2p/app/"
+  path: "./kubernetes/apps/services/i2p/app/"
   prune: true
   sourceRef:
     kind: GitRepository

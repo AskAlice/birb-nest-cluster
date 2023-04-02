@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-services-nitter
   namespace: flux-system
 spec:
-  path: "./cluster/apps/services/nitter/app/"
+  path: "./kubernetes/apps/services/nitter/app/"
   prune: true
   sourceRef:
     kind: GitRepository

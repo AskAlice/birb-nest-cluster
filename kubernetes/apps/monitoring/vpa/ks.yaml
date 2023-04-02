@@ -5,7 +5,7 @@ metadata:
   name: cluster-apps-monitoring-vpa
   namespace: flux-system
 spec:
-  path: "./cluster/apps/monitoring/vpa/app/"
+  path: "./kubernetes/apps/monitoring/vpa/app/"
   prune: true
   sourceRef:
     kind: GitRepository
