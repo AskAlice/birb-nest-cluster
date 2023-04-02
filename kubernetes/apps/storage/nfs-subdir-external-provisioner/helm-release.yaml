@@ -23,7 +23,7 @@ spec:
       create: true
       # Set StorageClass as the default StorageClass
       # Ignored if storageClass.create is false
-      defaultClass: false
+      defaultClass: true
       # Set a StorageClass name
       # Ignored if storageClass.create is false
       name: nfs-client
