@@ -3,9 +3,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: metallb-charts
+  name: kyverno-charts
   namespace: flux-system
 spec:
-  interval: 15m
-  url: https://metallb.github.io/metallb
+  interval: 30m
+  url: https://kyverno.github.io/kyverno/
   timeout: 3m

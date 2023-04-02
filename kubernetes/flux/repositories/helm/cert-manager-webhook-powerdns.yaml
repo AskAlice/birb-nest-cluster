@@ -3,9 +3,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: metallb-charts
+  name: cert-manager-webhook-powerdns-charts
   namespace: flux-system
 spec:
-  interval: 15m
-  url: https://metallb.github.io/metallb
+  interval: 30m
+  url: https://lordofsystem.github.io/cert-manager-webhook-powerdns
   timeout: 3m

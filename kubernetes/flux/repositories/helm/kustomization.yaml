@@ -2,23 +2,54 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - actions-runner-controller.yaml
+  - angelnu.yaml
+  - artifact-hub.yaml
+  - authelia.yaml
+  - authentik.yaml
+  - backtube.yaml
   - bitnami.yaml
-  - ingress-nginx.yaml
   - bjw-s.yaml
-  - kubernetes-dashboard.yaml
-  - weave-gitops.yaml
-  # - emberstack.yaml
+  - bootc.yaml
+  - bugfeast-tor-chart.yaml
+  - cert-manager-webhook-powerdns.yaml
+  - cilium.yaml
+  - cloudydeno.yaml
+  - coredns.yaml
+  - csi-driver-nfs.yaml
+  - deliveryhero.yaml
+  - drone.yaml
+  - elastic.yaml
+  - emberstack.yaml
   - external-dns.yaml
-  - truecharts.yaml
+  - fairwinds.yaml
+  - falco-security.yaml
+  - gitlab.yaml
+  - grafana.yaml
   - hajimari.yaml
+  - infracloudio.yaml
+  - ingress-nginx.yaml
   - jetstack.yaml
   - k8s-at-home.yaml
   - k8s-gateway.yaml
-  - elastic.yaml
+  - kerberos.yaml
+  - kubernetes-dashboard.yaml
+  - kubernetes-sigs-descheduler.yaml
+  - kubernetes-sigs-metrics-server.yaml
+  - kyverno.yaml
+  - longhorn.yaml
   - metallb.yaml
   - metrics-server.yaml
-  - stakater.yaml
+  - nfs-subdir-external-provisioner.yaml
   - nfs.yaml
+  - node-feature-discovery.yaml
+  - nvidia.yaml
   - opensearch.yaml
-  - kerberos.yaml
+  - piraeus.yaml
   - prometheus-community.yaml
+  - samipsolutions.yaml
+  - stakater.yaml
+  - teampiped.yaml
+  - truecharts.yaml
+  - vector.yaml
+  - weave-gitops.yaml

@@ -3,9 +3,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: metallb-charts
+  name: teampiped
   namespace: flux-system
 spec:
   interval: 15m
-  url: https://metallb.github.io/metallb
+  url: https://helm.piped.video
   timeout: 3m
