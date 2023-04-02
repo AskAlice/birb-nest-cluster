@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: recyclarr
-      version: 0.0.20
+      version: 3.0.16
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -19,10 +19,21 @@ spec:
     env:
       TZ: "${TIMEZONE}"
       CRON_SCHEDULE: "@daily"
-    image:
-      pullPolicy: IfNotPresent
-      repository: tccr.io/truecharts/recyclarr
-      tag: latest@sha256:89f4cd18f4920122eb7ca3b3d68169d6d2066a97c784f3ddb16ca6729e382d1c
+    service:
+      main:
+        enabled: true
+        ports:
+          main:
+            enabled: true
+
+    installContainers:
+      initconfig:
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        volumeMounts:
+          - name: config
+            mountPath: /gordo/k8s/media-config
+            storageClass: "nfs-client"
+        command: ["recyclarr", "create-config"]
     persistence:
       config:
         enabled: true
