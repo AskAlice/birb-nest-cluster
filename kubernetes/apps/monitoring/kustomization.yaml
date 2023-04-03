@@ -6,7 +6,7 @@ resources:
   - metrics-server
   - node-problem-detector
   - prom-stack/ks.yaml
-  - alert-manager
+  # - alert-manager
   - grafana
   - speedtest-exporter
   - vpa/ks.yaml
