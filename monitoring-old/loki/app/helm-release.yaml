@@ -122,22 +122,25 @@ spec:
         tag: 1.23-alpine
       ingress:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: nginx
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          hajimari.io/icon: video-input-antenna
         hosts:
-          - host: &host "loki.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
           - hosts:
               - *host
-    read:
-      replicas: 1
-    write:
-      replicas: 1
-      persistence:
-        size: 20Gi
-        storageClass: nfs-client
+    # read:
+    #   replicas: 1
+    # write:
+    #   replicas: 1
+    #   persistence:
+    #     size: 20Gi
+    #     storageClass: nfs-client
 
     backend:
       replicas: 1
@@ -169,3 +172,16 @@ spec:
         enabled: false
     test:
       enabled: false
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: loki-config
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 500m
+      limits:
+        memory: 8192Mi
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
