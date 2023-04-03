@@ -31,6 +31,7 @@ spec:
         - name: TZ
           value: "${TIMEZONE}"
       service:
+        type: NodePort
         annotations:
         # metallb.universe.tf/loadBalancerIPs: "${METALLB_INGRESS_ADDR}"
         externalTrafficPolicy: Local
