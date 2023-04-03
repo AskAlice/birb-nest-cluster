@@ -1,14 +1,23 @@
 ---
+apiVersion: metallb.io/v1beta1
+kind: BFDProfile
+metadata:
+  name: bfdprofile
+  namespace: metallb-system
+spec:
+  receiveInterval: 380
+  transmitInterval: 270
+---
 apiVersion: metallb.io/v1beta2
 kind: BGPPeer
 metadata:
-  name: home-router-v4
+  name: metallb-bgp
   namespace: metallb-system
 spec:
+  myASN: 64500
+  peerASN: 64501
   holdTime: 1m30s
-  myASN: 213021
-  peerASN: 213021
-  peerAddress: 10.0.105.1
+  peerAddress: 172.16.0.1
   # https://github.com/metallb/metallb/issues/1537
   ebgpMultiHop: false
 ---
