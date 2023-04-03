@@ -6,3 +6,6 @@ resources:
   - system-upgrade-controller
   - traefik
   - jaeger
+  - kube-prometheus-stack.yaml
+  - kyverno.yaml
+  - actions-runner-controller.yaml
