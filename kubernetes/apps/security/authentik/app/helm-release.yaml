@@ -29,37 +29,27 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
-    outposts:
-      docker_image_base: ghcr.io/goauthentik/%(type)s
-      # docker_image_base: ghcr.io/goauthentik/dev-%(type)s:gh-next
     fullnameOverride: authentik
-    image:
-      repository: ghcr.io/goauthentik/server
-      tag: 2023.3.1
-      # repository: ghcr.io/goauthentik/dev-server
-      # tag: gh-next
-      pullPolicy: Always
 
     authentik:
       log_level: trace
       secret_key: "${SECRET_AUTHENTIK_SECRET_KEY}"
       error_reporting:
-        enabled: true
-        environment: "kryptonian"
+        enabled: false
       postgresql:
-        host: "192.168.2.2"
+        host: "172.16.0.2"
         name: "authentik"
         user: "authentik"
         password: "${SECRET_AUTHENTIK_POSTGRES_PASSWORD}"
       redis:
         host: "redis.databases.svc.cluster.local"
-      email:
-        host: "mailer.${SECRET_DOMAIN}"
-        port: 587
-        use_tls: true
-        username: "samipsolutions/authentik"
-        password: "${SECRET_AUHENTIK_POSTAL_PASSWORD}"
-        from: "no-reply@${SECRET_DOMAIN}"
+      # email:
+      #   host: "mailer.${SECRET_DOMAIN}"
+      #   port: 587
+      #   use_tls: true
+      #   username: "samipsolutions/authentik"
+      #   password: "${SECRET_AUHENTIK_POSTAL_PASSWORD}"
+      #   from: "no-reply@${SECRET_DOMAIN}"
 
     ingress:
       enabled: true
@@ -79,9 +69,9 @@ spec:
             - "id.${SECRET_DOMAIN}"
           secretName: ${SECRET_DOMAIN}-tls
     postgresql:
-      enabled: false
+      enabled: true
     redis:
-      enabled: false
+      enabled: true
 
     affinity:
       nodeAffinity:

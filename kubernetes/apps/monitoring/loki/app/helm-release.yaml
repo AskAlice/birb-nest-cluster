@@ -5,6 +5,18 @@ metadata:
   name: loki-1
   namespace: monitoring
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-loki-write-0
+  namespace: monitoring
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-loki-read-0
+  namespace: monitoring
+---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
