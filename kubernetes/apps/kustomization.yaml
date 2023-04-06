@@ -17,5 +17,5 @@ resources:
   - databases
   - services
   - search
-  - tor
+  # - tor
   - vpn
