@@ -18,7 +18,15 @@ spec:
   values:
     nfs:
       server: "172.16.0.222"
-      path: /gordo/k8s
+      path: /gordo/k3s
+    mountOptions:
+      - nfsvers=4.2
+      - nconnect=8
+      - hard
+      - tcp
+      - intr
+      - nodiratime
+      - noatime
     storageClass:
       create: true
       # Set StorageClass as the default StorageClass

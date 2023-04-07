@@ -24,7 +24,7 @@ k3s_etcd_datastore: true
 k3s_use_unsupported_config: true
 
 # (string) Control Plane registration address
-# k3s_registration_address: "172.16.7.1"
+k3s_registration_address: "172.16.7.0"
 
 calico_bgp_peer_ip: 172.16.0.1
 calico_bgp_as_number: 64512
