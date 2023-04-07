@@ -5,8 +5,8 @@ resources:
   - namespace.yaml
   - metrics-server
   - node-problem-detector
-  # - prom-stack/ks.yaml
-  # - alert-manager
+  - prom-stack/ks.yaml
+  - alert-manager
   - grafana
   - speedtest-exporter
   - vpa/ks.yaml
