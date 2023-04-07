@@ -97,10 +97,10 @@ spec:
       enabled: false
     kubeProxy:
       enabled: false
-    kubeEtcd:
-      enabled: true
-      endpoints:
-        - 10.0.105.10
+    # kubeEtcd:
+    #   enabled: true
+    #   endpoints:
+    #     - 10.0.105.10
 
     # alertmanager:
     #   config:

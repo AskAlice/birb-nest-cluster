@@ -9,3 +9,14 @@ spec:
   interval: 15m
   url: https://charts.nfs-client.io
   timeout: 3m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.trux.dev/helmrepository_v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: longhorn
+  namespace: flux-system
+spec:
+  interval: 15m
+  url: https://charts.longhorn.io
+  timeout: 3m
