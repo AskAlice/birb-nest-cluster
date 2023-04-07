@@ -145,12 +145,10 @@ spec:
           storage:
             volumeClaimTemplate:
               spec:
-                accessModes:
-                  - ReadWriteMany
-                storageClassName: "nfs-client"
-                resources:
-                  requests:
-                    storage: 1Gi
+              storageClassName: local-path
+              resources:
+                requests:
+                  storage: 1Gi
 
     prometheusOperator:
       resources:
@@ -180,16 +178,7 @@ spec:
         enabled: false
       prometheusSpec:
         replicas: 1
-        podAntiAffinity: hard
-        retentionSize: "6GB"
-        replicaExternalLabelName: "replica"
-        ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelectorNilUsesHelmValues: false
-        probeSelectorNilUsesHelmValues: false
         retention: 2d
-        enableAdminAPI: true
-        walCompression: true
         storageSpec:
           volumeClaimTemplate:
             spec:
