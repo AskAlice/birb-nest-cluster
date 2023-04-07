@@ -5,6 +5,7 @@ metadata:
   name: tobs
   namespace: monitoring
 spec:
+  interval: 15m
   chart:
     spec:
       version: "14.0.0"
