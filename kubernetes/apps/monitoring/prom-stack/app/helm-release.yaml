@@ -132,6 +132,7 @@ spec:
             target_matchers:
               - severity = "warning"
     alertmanagerSpec:
+      minReadySeconds: 100
       ingress:
         enabled: true
         pathType: Prefix
