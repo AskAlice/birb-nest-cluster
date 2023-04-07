@@ -136,19 +136,19 @@ spec:
           pathType: Prefix
           ingressClassName: "nginx"
           hosts:
-            - &host "alerts.skylab.fi"
+            - &host "alerts.${SECRET_DOMAIN}"
           tls:
             - hosts:
                 - *host
-        alertmanagerSpec:
-          replicas: 1
-          storage:
-            volumeClaimTemplate:
-              spec:
-                storageClass: "longhorn"
-                resources:
-                  requests:
-                    storage: 1Gi
+      alertmanagerSpec:
+        replicas: 1
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClass: "longhorn"
+              resources:
+                requests:
+                  storage: 1Gi
 
     prometheusOperator:
       resources:
@@ -170,10 +170,10 @@ spec:
         #        annotations:
         #          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
-          - "prom.skylab.fi"
+          - "prom.${SECRET_DOMAIN}"
         tls:
           - hosts:
-              - "prom.skylab.fi"
+              - "prom.${SECRET_DOMAIN}"
       thanosService:
         enabled: false
       prometheusSpec:
