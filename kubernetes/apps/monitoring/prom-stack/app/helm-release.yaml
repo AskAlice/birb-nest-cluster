@@ -27,8 +27,8 @@ spec:
       retries: 3
   values:
     fullnameOverride: prom
-    # defaultRules:
-    #   enabled: true
+    defaultRules:
+      enabled: true
     #   rules:
     #     alertmanager: false
     #     alertmanagerSpec: false
