@@ -131,24 +131,24 @@ spec:
               - severity = "critical"
             target_matchers:
               - severity = "warning"
-      alertmanagerSpec:
-        ingress:
-          enabled: true
-          pathType: Prefix
-          ingressClassName: "nginx"
-          hosts:
-            - &host "alerts.${SECRET_DOMAIN}"
-          tls:
-            - hosts:
-                - *host
-        replicas: 1
-        storage:
-          volumeClaimTemplate:
-            spec:
-              storageClass: "longhorn"
-              resources:
-                requests:
-                  storage: 1Gi
+    alertmanagerSpec:
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: "nginx"
+        hosts:
+          - &host "alerts.${SECRET_DOMAIN}"
+        tls:
+          - hosts:
+              - *host
+      replicas: 1
+      storage:
+        volumeClaimTemplate:
+          spec:
+            storageClass: "longhorn"
+            resources:
+              requests:
+                storage: 1Gi
 
     prometheusOperator:
       resources:
