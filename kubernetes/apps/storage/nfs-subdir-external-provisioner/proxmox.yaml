@@ -24,7 +24,11 @@ subsets:
       - ip: 172.16.0.222
     ports:
       - name: nfs-tcp
-        port: 6006
+        port: 2049
+        protocol: TCP
+      - name: nfs-tcp2
+        port: 111
+        protocol: TCP
         protocol: TCP
       - name: proxmox
         port: 8006

@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - nfs-subdir-external-provisioner
-  - nfs-provisioner
+  # - nfs-provisioner
   - longhorn
   - csi-driver-nfs
