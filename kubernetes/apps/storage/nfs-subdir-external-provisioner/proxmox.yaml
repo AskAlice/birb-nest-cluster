@@ -29,7 +29,6 @@ subsets:
       - name: nfs-tcp2
         port: 111
         protocol: TCP
-        protocol: TCP
       - name: proxmox
         port: 8006
         protocol: TCP
