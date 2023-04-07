@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app alertmanager-discord
+  name: alertmanager-discord
   namespace: monitoring
 spec:
   interval: 15m
@@ -31,7 +31,7 @@ spec:
     cleanupOnFail: true
   values:
     global:
-      nameOverride: *app
+      nameOverride: alertmanager-discord
     image:
       repository: benjojo/alertmanager-discord
       tag: latest
