@@ -38,7 +38,7 @@ spec:
 
     env:
       PGADMIN_DEFAULT_EMAIL: sm@${SECRET_DOMAIN}
-      PGADMIN_DEFAULT_PASSWORD: ${PASSWORD}
+      PGADMIN_DEFAULT_PASSWORD: ${ELASTIC_PASSWORD}
 
     service:
       main:

@@ -24,4 +24,6 @@ spec:
   values:
     kubeletDir: /var/lib/kubelet
     controller:
-      replicas: 3
+      replicas: 5
+    node:
+      replicas: 5
