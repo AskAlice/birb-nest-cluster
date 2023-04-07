@@ -30,7 +30,7 @@ spec:
     defaultRules:
       enabled: true
       rules:
-        # alertmanager: true
+        alertmanager: false
         etcd: true
         configReloaders: true
         general: true
