@@ -133,12 +133,14 @@ spec:
               - *host
     read:
       replicas: 1
+      persistence:
+        size: 20Gi
+        storageClass: longhorn
     write:
       replicas: 1
       persistence:
         size: 20Gi
-        storageClass: nfs-client
-        existingClaim: loki-1
+        storageClass: longhorn
     backend:
       replicas: 1
       extraVolumeMounts:
@@ -154,7 +156,7 @@ spec:
           emptyDir: {}
       persistence:
         size: 20Gi
-        storageClass: nfs-client
+        storageClass: longhorn
 
     monitoring:
       serviceMonitor:
