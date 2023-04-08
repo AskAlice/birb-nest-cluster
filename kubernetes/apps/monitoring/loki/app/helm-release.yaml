@@ -31,6 +31,8 @@ spec:
     singleBinary:
       replicas: 1
     loki:
+      storage:
+        type: filesystem
       structuredConfig:
         auth_enabled: false
 
@@ -72,8 +74,7 @@ spec:
         common:
           path_prefix: /var/loki
           replication_factor: 1
-          storage:
-            type: filesystem
+
           # storage:
           #   s3:
           #     s3: null
