@@ -134,13 +134,20 @@ spec:
         tls:
           - hosts:
               - *host
-    # read:
-    #   replicas: 1
-    # write:
-    #   replicas: 1
-    #   persistence:
-    #     size: 20Gi
-    #     storageClass: nfs-client
+    read:
+      replicas: 1
+      persistence:
+        size: 20Gi
+        storageClass: longhorn
+        accessModes:
+          - ReadWriteMany
+    write:
+      replicas: 1
+      persistence:
+        size: 20Gi
+        storageClass: longhorn
+        accessModes:
+          - ReadWriteMany
 
     backend:
       replicas: 1
@@ -157,8 +164,9 @@ spec:
           emptyDir: {}
       persistence:
         size: 20Gi
-        storageClass: nfs-client
-
+        storageClass: longhorn
+        accessModes:
+          - ReadWriteMany
     monitoring:
       serviceMonitor:
         enabled: false
