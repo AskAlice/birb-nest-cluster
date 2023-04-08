@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
-      interval: 15m
+    interval: 15m
   install:
     createNamespace: true
     crds: CreateReplace
@@ -156,9 +156,9 @@ spec:
     prometheusOperator:
       resources:
         requests:
-          memory: 164M
+          memory: 1Gi
         limits:
-          memory: 300M
+          memory: 4Gi
       prometheusConfigReloader:
         resources:
           requests:
@@ -198,6 +198,6 @@ spec:
                   storage: 50Gi
         resources:
           requests:
-            memory: 2281M
+            memory: 4096M
           limits:
-            memory: 3123M
+            memory: 8192M
