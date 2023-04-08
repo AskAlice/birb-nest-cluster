@@ -26,6 +26,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    minio:
+      enabled: true
     loki:
       structuredConfig:
         auth_enabled: false
@@ -68,6 +70,8 @@ spec:
         common:
           path_prefix: /var/loki
           replication_factor: 1
+          storage:
+            type: filesystem
           # storage:
           #   s3:
           #     s3: null
