@@ -28,6 +28,8 @@ spec:
   values:
     minio:
       enabled: true
+    singleBinary:
+      replicas: 1
     loki:
       structuredConfig:
         auth_enabled: false
