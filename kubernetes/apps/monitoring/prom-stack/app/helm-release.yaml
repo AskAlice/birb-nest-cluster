@@ -2,151 +2,156 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: tobs
+  name: kube-prometheus-stack
   namespace: monitoring
 spec:
   interval: 15m
   chart:
     spec:
-      version: "14.0.0"
-      chart: tobs
+      # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      version: 45.8.1
       sourceRef:
         kind: HelmRepository
-        name: timescale
+        name: prometheus-community-charts
         namespace: flux-system
+      interval: 15m
   install:
     createNamespace: true
+    crds: CreateReplace
     remediation:
-      retries: 10
-    timeout: 15m
+      retries: 3
   upgrade:
+    crds: CreateReplace
     remediation:
-      retries: 10
-    timeout: 15m
+      retries: 3
+  dependsOn:
+    - name: csi-driver-nfs
+      namespace: storage
   values:
-    opentelemetry-operator:
+    fullnameOverride: prom
+    defaultRules:
       enabled: true
+      rules:
+        alertmanager: true
+        etcd: true
+        configReloaders: true
+        general: true
+        k8s: true
+        kubeApiserver: true
+        kubeApiserverAvailability: true
+        kubeApiserverSlos: true
+        kubelet: true
+        kubeProxy: false
+        kubePrometheusGeneral: true
+        kubePrometheusNodeRecording: true
+        kubernetesApps: true
+        kubernetesResources: true
+        kubernetesStorage: true
+        kubernetesSystem: true
+        kubeScheduler: false
+        kubeStateMetrics: true
+        network: true
+        node: true
+        nodeExporterAlerting: true
+        nodeExporterRecording: true
+        prometheus: true
+        prometheusOperator: true
 
-    promscale:
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
+      tolerations:
+        - effect: "NoExecute"
+          operator: "Exists"
+        - effect: "NoSchedule"
+          operator: "Exists"
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          annotations:
+            grafana_folder: Prometheus
+    kubelet:
       enabled: true
-      #image: timescale/promscale:0.8.0
-      service:
-        type: NodePort
-
-    timescaledb-single:
+      serviceMonitor:
+        metricRelabelings:
+          - action: replace
+            sourceLabels:
+              - node
+            targetLabel: instance
+    kubeApiServer:
       enabled: true
-      replicaCount: 1
-      loadBalancer:
-        enabled: true
-      persistentVolumes:
-        data:
-          size: 11Gi
-        wal:
-          size: 5Gi
-      backup:
-        enabled: false
-      #env:
-      #  PGBACKREST_REPO1_S3_BUCKET
-      #  PGBACKREST_REPO1_S3_ENDPOINT
-      #  PGBACKREST_REPO1_S3_REGION
-      #  PGBACKREST_REPO1_S3_KEY
-      #  PGBACKREST_REPO1_S3_KEY_SECRET
-
-    kube-prometheus-stack:
+    kubeControllerManager:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    kubeProxy:
+      enabled: false
+    kubeEtcd:
       enabled: true
+      endpoints:
+        - 172.16.7.0
 
-      alertManager:
-        enabled: true
+    alertmanager:
+      config:
+        global:
+          resolve_timeout: 5m
+        receivers:
+          - name: "null"
+          - name: "discord"
+            webhook_configs:
+              - url: http://alertmanager-discord:9094
+                send_resolved: true
+        route:
+          group_by: ["alertname", "job"]
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 6h
+          receiver: "discord"
+          routes:
+            - receiver: "null"
+              matchers:
+                - alertname =~ "InfoInhibitor|Watchdog"
+            - receiver: "discord"
+              matchers:
+                - severity = "critical"
+              continue: true
+        inhibit_rules:
+          - source_matchers:
+              - severity = "critical"
+            target_matchers:
+              - severity = "warning"
+        ingress:
+          enabled: true
+          pathType: Prefix
+          ingressClassName: "nginx"
+          hosts:
+            - &host "alerts.${SECRET_DOMAIN}"
+          tls:
+            - hosts:
+                - *host
         alertmanagerSpec:
           replicas: 1
-
-      grafana:
-        enabled: true
-
-        prometheus:
-          datasource:
-            enabled: true
-        timescale:
-          datasource:
-            enabled: true
-
-        adminPassword: ${ELASTIC_PASSWORD}
-
-        ingress:
-          enabled: true
-          pathType: Prefix
-          ingressClassName: "nginx"
-          hosts:
-            - "gf.${SECRET_DOMAIN}"
-          tls: true
-
-      prometheus:
-        prometheusSpec:
-          replicas: 1
-          scrapeInterval: 1m
-          scrapeTimeout: 10s
-          evaluationInterval: 1m
-          retention: 1d
-          storageSpec:
+          storage:
             volumeClaimTemplate:
               spec:
+                storageClass: "longhorn"
                 resources:
                   requests:
-                    storage: 3Gi
-        ingress:
-          enabled: true
-          pathType: Prefix
-          ingressClassName: "nginx"
-          hosts:
-            - "prom.${SECRET_DOMAIN}"
-          tls: true
-    # alertmanager:
-    #   config:
-    #     global:
-    #       resolve_timeout: 5m
-    #     receivers:
-    #       - name: "null"
-    #       - name: "discord"
-    #         webhook_configs:
-    #           - url: http://alertmanager-discord:9094
-    #             send_resolved: true
-    #     route:
-    #       group_by: ["alertname", "job"]
-    #       group_wait: 30s
-    #       group_interval: 5m
-    #       repeat_interval: 6h
-    #       receiver: "discord"
-    #       routes:
-    #         - receiver: "null"
-    #           matchers:
-    #             - alertname =~ "InfoInhibitor|Watchdog"
-    #         - receiver: "discord"
-    #           matchers:
-    #             - severity = "critical"
-    #           continue: true
-    #     inhibit_rules:
-    #       - source_matchers:
-    #           - severity = "critical"
-    #         target_matchers:
-    #           - severity = "warning"
-    # minReadySeconds: 100
-    # # ingress:
-    # #   enabled: true
-    # #   pathType: Prefix
-    # #   ingressClassName: "nginx"
-    # #   hosts:
-    # #     - &host "alerts.${SECRET_DOMAIN}"
-    # #   tls:
-    # #     - hosts:
-    # #         - *host
-    # # replicas: 1
-    # # storage:
-    # #   volumeClaimTemplate:
-    # #     spec:
-    # #       storageClass: "longhorn"
-    # #       resources:
-    # #         requests:
-    # #           storage: 1Gi
+                    storage: 1Gi
 
     prometheusOperator:
       resources:
@@ -165,8 +170,6 @@ spec:
         enabled: true
         pathType: Prefix
         ingressClassName: "nginx"
-        #        annotations:
-        #          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
           - "prom.${SECRET_DOMAIN}"
         tls:
