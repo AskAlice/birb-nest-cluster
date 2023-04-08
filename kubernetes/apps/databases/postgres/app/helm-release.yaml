@@ -25,7 +25,7 @@ spec:
       chart: postgresql
       sourceRef:
         kind: HelmRepository
-        name: postgresql
+        name: bitnami
         namespace: flux-system
   values:
     persistence:
