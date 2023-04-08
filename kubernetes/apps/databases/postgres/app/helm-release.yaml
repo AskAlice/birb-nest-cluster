@@ -32,3 +32,21 @@ spec:
     persistence:
       enabled: true
       existingClaim: postgres
+    auth:
+      existingSecret: postgresql
+      secretKeys:
+        postgresPassword: PG_PASSWORD
+        adminPasswordKey: PG_PASSWORD
+        replicationPasswordKey: PG_PASSWORD
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        namespace: monitoring
+        interval: 15s
+        scrapeTimeout: 10s
+        selector:
+          prometheus: prometheus
+        additionalLabels:
+          release: postgresql
