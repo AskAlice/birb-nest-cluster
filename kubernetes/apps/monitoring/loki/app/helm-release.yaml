@@ -59,7 +59,7 @@ spec:
           configs:
             - from: "2021-08-01"
               store: boltdb-shipper
-              object_store: s3
+              # object_store: s3
               schema: v11
               index:
                 prefix: loki_index_
@@ -98,7 +98,7 @@ spec:
 
         compactor:
           working_directory: /var/loki/boltdb-shipper-compactor
-          shared_store: s3
+          # shared_store: s3
           compaction_interval: 10m
           retention_enabled: true
           retention_delete_delay: 2h
