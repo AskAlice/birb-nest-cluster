@@ -37,7 +37,21 @@ spec:
       showGlobalBookmarks: false
       showAppUrls: false
       defaultEnable: true
-      # namespaceSelector: true
+      namespaceSelector:
+        any: true
+        matchNames:
+          - monitoring
+          - media
+          - security
+          - networking
+          - home-automation
+          - flux-system
+          - search
+          - storage
+          - services
+          - default
+          - databases
+
     ingress:
       main:
         enabled: true
