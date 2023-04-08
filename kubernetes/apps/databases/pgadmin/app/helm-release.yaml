@@ -69,6 +69,10 @@ spec:
       main:
         enabled: true
         ingressClassName: nginx
+        annotations:
+          hajimari.io/enable: true
+          hajimari.io/appName: pgadmin
+          hajimari.io/icon: table-star
         hosts:
           - host: pgadmin.${SECRET_DOMAIN}
             paths:

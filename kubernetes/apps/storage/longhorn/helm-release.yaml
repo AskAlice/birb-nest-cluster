@@ -19,7 +19,7 @@ spec:
   values:
     persistence:
       defaultClassReplicaCount: 2
-      defaultFsType: zfs
+      defaultFsType: xfs
     defaultSettings:
       defaultReplicaCount: 2
     pspEnable: false

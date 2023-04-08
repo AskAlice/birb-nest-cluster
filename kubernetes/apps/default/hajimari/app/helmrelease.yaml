@@ -32,14 +32,12 @@ spec:
       alwaysTargetBlank: true
       showGreeting: false
       showAppGroups: false
-      showAppStatus: false
+      showAppStatus: true
       showBookmarkGroups: false
       showGlobalBookmarks: false
       showAppUrls: false
       defaultEnable: true
-      namespaceSelector:
-        matchNames:
-          - default
+      namespaceSelector: true
     ingress:
       main:
         enabled: true
