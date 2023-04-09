@@ -31,8 +31,8 @@ spec:
     singleBinary:
       replicas: 1
     loki:
-      storage:
-        type: filesystem
+      # storage:
+      #   type: filesystem
       structuredConfig:
         auth_enabled: false
         server:
