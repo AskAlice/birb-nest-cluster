@@ -1,0 +1,50 @@
+authentik_domain: id.${SECRET_DOMAIN}
+endpoints:
+  - name: opnsense
+    namespace: networking
+    ip: 172.16.0.1
+    authentik: true
+    ingressPort: 8443
+    sslHost: true
+    ports:
+      - name: opnsense
+        port: 8443
+        protocol: TCP
+        targetPort: 8443
+      - name: opnsense-ssh
+        port: 22
+        protocol: TCP
+        targetPort: 22
+    hostname: opnsense.${SECRET_DOMAIN}
+    ingressClassName: nginx
+    annotations:
+  - name: proxmox
+    namespace: networking
+    ip: 172.16.0.222
+    ingressPort: 8006
+    sslHost: true
+    ports:
+      - name: proxmox
+        port: 8006
+        protocol: TCP
+        targetPort: 8006
+      - name: proxmox-ssh
+        port: 22
+        protocol: TCP
+        targetPort: 22
+    hostname: proxmox.${SECRET_DOMAIN}
+    ingressClassName: nginx
+    annotations:
+  - name: ha
+    namespace: networking
+    ip: 172.16.0.4
+    ingressPort: 8123
+    sslHost: false
+    ports:
+      - name: ha
+        port: 8123
+        protocol: TCP
+        targetPort: 8123
+    hostname: ha.${SECRET_DOMAIN}
+    ingressClassName: nginx
+    annotations:

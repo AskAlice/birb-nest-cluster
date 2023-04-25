@@ -1,6 +1,7 @@
 ---
 ignore: |
   *.sops.*
+  kubernetes/charts/*
 extends: default
 rules:
   truthy:

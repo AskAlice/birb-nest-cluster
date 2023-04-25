@@ -162,9 +162,9 @@ spec:
       prometheusConfigReloader:
         resources:
           requests:
-            memory: 50Mi
+            memory: 32Mi
           limits:
-            memory: 800Mi
+            memory: 150Mi
     prometheus:
       ingress:
         enabled: true
@@ -187,17 +187,20 @@ spec:
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         retention: 2d
+        scrapeInterval: 2m
         enableAdminAPI: true
         walCompression: true
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: longhorn
+              storageClassName: nfs-client
               resources:
                 requests:
                   storage: 50Gi
         resources:
           requests:
-            memory: 4096M
+            cpu: 2281m
+            memory: 2118M
           limits:
-            memory: 8192M
+            cpu: 2281m
+            memory: 7118M
