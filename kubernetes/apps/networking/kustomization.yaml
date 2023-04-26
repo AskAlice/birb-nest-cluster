@@ -9,3 +9,4 @@ resources:
   - ./k8s-gateway/ks.yaml
   - ./metallb/ks.yaml
   - ./metallb/ks-config.yaml
+  - ./networking/endpoints/ks.yaml

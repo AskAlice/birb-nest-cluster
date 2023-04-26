@@ -3,48 +3,81 @@ endpoints:
   - name: opnsense
     namespace: networking
     ip: 172.16.0.1
-    authentik: true
-    ingressPort: 8443
-    sslHost: true
     ports:
       - name: opnsense
         port: 8443
+        ingress: HTTPS
         protocol: TCP
         targetPort: 8443
+        authentik: true
+        hostname: opnsense.${SECRET_DOMAIN}
       - name: opnsense-ssh
         port: 22
         protocol: TCP
         targetPort: 22
-    hostname: opnsense.${SECRET_DOMAIN}
-    ingressClassName: nginx
     annotations:
   - name: proxmox
     namespace: networking
     ip: 172.16.0.222
-    ingressPort: 8006
-    sslHost: true
     ports:
       - name: proxmox
         port: 8006
         protocol: TCP
         targetPort: 8006
+        ingress: HTTPS
+        authentik: true
+        hostname: proxmox.${SECRET_DOMAIN}
       - name: proxmox-ssh
         port: 22
         protocol: TCP
         targetPort: 22
-    hostname: proxmox.${SECRET_DOMAIN}
-    ingressClassName: nginx
     annotations:
   - name: ha
     namespace: networking
     ip: 172.16.0.4
-    ingressPort: 8123
-    sslHost: false
     ports:
       - name: ha
         port: 8123
         protocol: TCP
         targetPort: 8123
-    hostname: ha.${SECRET_DOMAIN}
-    ingressClassName: nginx
-    annotations:
+        ingress: HTTP
+        hostname: ha.${SECRET_DOMAIN}
+  - name: htpc-download-box
+    namespace: networking
+    ip: 172.16.1.3
+    ports:
+      - name: Radarr
+        port: 7878
+        protocol: TCP
+        targetPort: 7878
+        ingress: HTTP
+        authentik: true
+        hostname: radarr.${SECRET_DOMAIN}
+      - name: Sonarr
+        port: 8989
+        protocol: TCP
+        targetPort: 8989
+        ingress: HTTP
+        authentik: true
+        hostname: sonarr.${SECRET_DOMAIN}
+      - name: Prowlarr
+        port: 9696
+        protocol: TCP
+        targetPort: 9696
+        ingress: HTTP
+        authentik: true
+        hostname: prowlarr.${SECRET_DOMAIN}
+      - name: Lidarr
+        port: 8686
+        protocol: TCP
+        targetPort: 8686
+        ingress: HTTP
+        authentik: true
+        hostname: lidarr.${SECRET_DOMAIN}
+      - name: qBittorrent
+        port: 8080
+        protocol: TCP
+        targetPort: 8080
+        ingress: HTTP
+        authentik: true
+        hostname: qbittorrent.${SECRET_DOMAIN}

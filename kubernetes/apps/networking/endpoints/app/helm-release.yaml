@@ -1,0 +1,113 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: birb-ingress
+  namespace: networking
+spec:
+  interval: 15m
+  chart:
+    spec:
+      # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
+      chart: birb-ingress
+      version: 0.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: birb-nest-cluster
+        namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  dependsOn:
+    - name: ingress-nginx
+      namespace: networking
+  values:
+    authentik_domain: id.${SECRET_DOMAIN}
+    endpoints:
+      - name: opnsense
+        namespace: networking
+        ip: 172.16.0.1
+        ports:
+          - name: opnsense
+            port: 8443
+            ingress: HTTPS
+            protocol: TCP
+            targetPort: 8443
+            authentik: true
+            hostname: opnsense.${SECRET_DOMAIN}
+          - name: opnsense-ssh
+            port: 22
+            protocol: TCP
+            targetPort: 22
+        annotations:
+      - name: proxmox
+        namespace: networking
+        ip: 172.16.0.222
+        ports:
+          - name: proxmox
+            port: 8006
+            protocol: TCP
+            targetPort: 8006
+            ingress: HTTPS
+            authentik: true
+            hostname: proxmox.${SECRET_DOMAIN}
+          - name: proxmox-ssh
+            port: 22
+            protocol: TCP
+            targetPort: 22
+        annotations:
+      - name: ha
+        namespace: networking
+        ip: 172.16.0.4
+        ports:
+          - name: ha
+            port: 8123
+            protocol: TCP
+            targetPort: 8123
+            ingress: HTTP
+            hostname: ha.${SECRET_DOMAIN}
+      - name: htpc-download-box
+        namespace: networking
+        ip: 172.16.1.3
+        ports:
+          - name: Radarr
+            port: 7878
+            protocol: TCP
+            targetPort: 7878
+            ingress: HTTP
+            authentik: true
+            hostname: radarr.${SECRET_DOMAIN}
+          - name: Sonarr
+            port: 8989
+            protocol: TCP
+            targetPort: 8989
+            ingress: HTTP
+            authentik: true
+            hostname: sonarr.${SECRET_DOMAIN}
+          - name: Prowlarr
+            port: 9696
+            protocol: TCP
+            targetPort: 9696
+            ingress: HTTP
+            authentik: true
+            hostname: prowlarr.${SECRET_DOMAIN}
+          - name: Lidarr
+            port: 8686
+            protocol: TCP
+            targetPort: 8686
+            ingress: HTTP
+            authentik: true
+            hostname: lidarr.${SECRET_DOMAIN}
+          - name: qBittorrent
+            port: 8080
+            protocol: TCP
+            targetPort: 8080
+            ingress: HTTP
+            authentik: true
+            hostname: qbittorrent.${SECRET_DOMAIN}
