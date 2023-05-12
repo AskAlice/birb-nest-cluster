@@ -1,33 +1,36 @@
-{{- range .Values.endpoints }}
+{{- range $key, $value := .Values.endpoints }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .name }}
-  namespace: {{ .namespace }}
+  name: {{ $value.name | lower }}
+  namespace: {{ $value.namespace }}
 spec:
   ports:
   {{- range .ports }}
-    - name: {{ .name }}
+    - name: {{ .name | lower }}
       port: {{ .port }}
       protocol: {{ .protocol }}
       targetPort: {{ .targetPort }}
   {{- end }}
-  clusterIP: None
   type: ClusterIP
   sessionAffinity: None
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  internalTrafficPolicy: Cluster
 ---
 apiVersion: v1
 kind: Endpoints
 metadata:
-  name: {{ .name }}
+  name: {{ .name | lower }}
   namespace: {{ .namespace }}
 subsets:
   - addresses:
       - ip: {{ .ip }}
     ports:
     {{- range .ports }}
-      - name: {{ .name }}
+      - name: {{ .name | lower }}
         port: {{ .port }}
         protocol: {{ .protocol }}
     {{- end }}
@@ -37,15 +40,15 @@ subsets:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $p.name }}
+  name: {{ $p.name | lower }}
   namespace: {{ .namespace }}
   annotations:
     {{- if eq .ingress "HTTPS" }}
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     nginx.ingress.kubernetes.io/proxy-ssl-verify: "off"
     {{- end }}
-      {{- if or (.authentik)  ($p.authentik) }}
-    nginx.ingress.kubernetes.io/auth-url: {{ .authentik_domain }}/outpost.goauthentik.io/auth/nginx
+    {{- if or (.authentik)  ($p.authentik) }}
+    nginx.ingress.kubernetes.io/auth-url: https://id.emu.sh/outpost.goauthentik.io/auth/nginx
     nginx.ingress.kubernetes.io/auth-response-headers: |-
       Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-email,X-authentik-name,X-authentik-uid
     nginx.ingress.kubernetes.io/auth-snippet: |
@@ -53,6 +56,10 @@ metadata:
     {{- end}}
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+      - '*.emu.sh'
+      secretName: emu.sh-production-tls
   rules:
     - host: {{ $p.hostname }}
       http:
@@ -61,7 +68,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ $p.name }}
+                name: {{ $value.name | lower }}
                 port:
                   number: {{ $p.port }}
         {{- if or (.authentik)  ($p.authentik) }}

@@ -36,6 +36,7 @@ spec:
         - hosts:
             - "*.${SECRET_DOMAIN}"
           secretName: emu-sh-production-tls
+    secret_key: ${AUTHENTIK_SECRET_KEY}
     authentik:
       secret_key: ${AUTHENTIK_SECRET_KEY}
       log_level: debug

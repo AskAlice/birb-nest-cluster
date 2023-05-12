@@ -103,7 +103,7 @@ spec:
     kubeEtcd:
       enabled: true
       endpoints:
-        - 172.16.7.0
+        - 172.16.7.5
 
     alertmanager:
       config:

@@ -43,7 +43,7 @@ spec:
               pathType: Prefix
       tls:
         - hosts:
-            - *host
+            - "*.${SECRET_DOMAIN}"
     networkPolicy:
       create: false
     metrics:

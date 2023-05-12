@@ -24,7 +24,7 @@ k3s_etcd_datastore: true
 k3s_use_unsupported_config: true
 
 # (string) Control Plane registration address
-k3s_registration_address: "172.16.7.0"
+k3s_registration_address: "172.16.7.5"
 
 calico_bgp_peer_ip: 172.16.0.1
 calico_bgp_as_number: 64512
@@ -53,4 +53,4 @@ k3s_server_manifests_urls:
 # /var/lib/rancher/k3s/server/manifests
 k3s_server_manifests_templates:
   - calico-installation.yaml.j2
-  # - kube-vip-daemonset.yaml.j2
+  # - kube-vip-installation.yaml.j2

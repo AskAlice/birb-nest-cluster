@@ -160,7 +160,7 @@ spec:
         - "grafana.${SECRET_DOMAIN}"
       tls:
         - hosts:
-            - "grafana.${SECRET_DOMAIN}"
+            - "*.${SECRET_DOMAIN}"
     serviceAccount:
       create: true
       autoMount: true

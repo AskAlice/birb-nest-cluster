@@ -1,4 +1,4 @@
-authentik_domain: id.${SECRET_DOMAIN}
+authentik_domain: id.emu.sh
 endpoints:
   - name: opnsense
     namespace: networking
@@ -10,12 +10,28 @@ endpoints:
         protocol: TCP
         targetPort: 8443
         authentik: true
-        hostname: opnsense.${SECRET_DOMAIN}
+        hostname: opnsense.emu.sh
       - name: opnsense-ssh
         port: 22
         protocol: TCP
         targetPort: 22
     annotations:
+  - name: alice
+    namespace: networking
+    ip: 172.16.0.2
+    ports:
+      - name: bitwarden
+        port: 80
+        protocol: TCP
+        targetPort: 80
+        ingress: HTTP
+        authentik: false
+        hostname: bw.emu.sh
+      - name: invoke
+        port: 7861
+        protocol: TCP
+        targetPort: 7861
+        hostname: invoke.emu.sh
   - name: proxmox
     namespace: networking
     ip: 172.16.0.222
@@ -26,7 +42,7 @@ endpoints:
         targetPort: 8006
         ingress: HTTPS
         authentik: true
-        hostname: proxmox.${SECRET_DOMAIN}
+        hostname: proxmox.emu.sh
       - name: proxmox-ssh
         port: 22
         protocol: TCP
@@ -41,7 +57,7 @@ endpoints:
         protocol: TCP
         targetPort: 8123
         ingress: HTTP
-        hostname: ha.${SECRET_DOMAIN}
+        hostname: ha.emu.sh
   - name: htpc-download-box
     namespace: networking
     ip: 172.16.1.3
@@ -52,32 +68,32 @@ endpoints:
         targetPort: 7878
         ingress: HTTP
         authentik: true
-        hostname: radarr.${SECRET_DOMAIN}
+        hostname: radarr.emu.sh
       - name: Sonarr
         port: 8989
         protocol: TCP
         targetPort: 8989
         ingress: HTTP
         authentik: true
-        hostname: sonarr.${SECRET_DOMAIN}
+        hostname: sonarr.emu.sh
       - name: Prowlarr
         port: 9696
         protocol: TCP
         targetPort: 9696
         ingress: HTTP
         authentik: true
-        hostname: prowlarr.${SECRET_DOMAIN}
+        hostname: prowlarr.emu.sh
       - name: Lidarr
         port: 8686
         protocol: TCP
         targetPort: 8686
         ingress: HTTP
         authentik: true
-        hostname: lidarr.${SECRET_DOMAIN}
+        hostname: lidarr.emu.sh
       - name: qBittorrent
         port: 8080
         protocol: TCP
         targetPort: 8080
         ingress: HTTP
         authentik: true
-        hostname: qbittorrent.${SECRET_DOMAIN}
+        hostname: qbittorrent.emu.sh

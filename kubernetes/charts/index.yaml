@@ -1,24 +1,34 @@
 apiVersion: v1
 entries:
   birb-ingress:
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2023-04-25T18:15:23.491763665-06:00"
-    description: An easy way to set up external endpoints as ingress
-    digest: 5d17f22dc22680b1148d34d97a34e39065e331b2f6676ed11ba5e34d598f6aad
-    name: birb-ingress
-    type: application
-    urls:
-    - https://askalice.github.io/birb-nest-cluster/kubernetes/charts/birb-ingress-0.2.0.tgz
-    version: 0.2.0
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2023-04-25T18:15:23.486582481-06:00"
-    description: A Helm chart for Kubernetes
-    digest: e07e5491a0c5d68478620c100cd61ef0525e0ad3c26963e03f5985aa2a40131a
-    name: birb-ingress
-    type: application
-    urls:
-    - https://askalice.github.io/birb-nest-cluster/kubernetes/charts/birb-ingress-0.1.0.tgz
-    version: 0.1.0
-generated: "2023-04-25T18:15:23.480830795-06:00"
+    - apiVersion: v2
+      appVersion: 1.16.0
+      created: "2023-05-11T17:07:57.411501529-06:00"
+      description: An easy way to set up external endpoints as ingress
+      digest: 25e40de8a4b10c14084bdbaaa6460bf3e8d1f4e2755f38f819544de43ab9da80
+      name: birb-ingress
+      type: application
+      urls:
+        - https://askalice.github.io/birb-nest-cluster/kubernetes/charts/birb-ingress-0.2.1.tgz
+      version: 0.2.1
+    - apiVersion: v2
+      appVersion: 1.16.0
+      created: "2023-05-11T17:07:57.401129794-06:00"
+      description: An easy way to set up external endpoints as ingress
+      digest: 5d17f22dc22680b1148d34d97a34e39065e331b2f6676ed11ba5e34d598f6aad
+      name: birb-ingress
+      type: application
+      urls:
+        - https://askalice.github.io/birb-nest-cluster/kubernetes/charts/birb-ingress-0.2.0.tgz
+      version: 0.2.0
+    - apiVersion: v2
+      appVersion: 1.16.0
+      created: "2023-05-11T17:07:57.391651248-06:00"
+      description: A Helm chart for Kubernetes
+      digest: e07e5491a0c5d68478620c100cd61ef0525e0ad3c26963e03f5985aa2a40131a
+      name: birb-ingress
+      type: application
+      urls:
+        - https://askalice.github.io/birb-nest-cluster/kubernetes/charts/birb-ingress-0.1.0.tgz
+      version: 0.1.0
+generated: "2023-05-11T17:07:57.380108605-06:00"
